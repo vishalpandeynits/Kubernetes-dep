@@ -5,7 +5,7 @@ metadata:
   labels:
     tier: deployment-postgres
 spec:
-  replicas: 3
+  replicas: 1
   selector:
     matchLabels: # Corrected field name to matchLabels
       kind: postgres # Label to match with Pod's metadata.labels
@@ -15,12 +15,17 @@ spec:
         kind: postgres # Label for the Pod's metadata.labels
     spec:
       containers:
-        - name: postgres
-          image: postgres
+        - name: postgres-app
+          image: postgres:latest
+          env:
+            - name: POSTGRES_HOST_AUTH_METHOD
+              value: "trust" # Allow all connections without a password (Not recommended for production)
+            - name: POSTGRES_PASSWORD
+              value: "postgres" # Set the password for the superuser
           resources:
             limits:
               cpu: "1" # Limit the container to use a maximum of 1 CPU core
               memory: "512Mi" # Limit the container to use a maximum of 512 MiB of memory
             requests:
-              cpu: "0.5" # Request a minimum of 0.5 CPU core for the container
+              cpu: "0.25" # Request a minimum of 0.25 CPU core for the container
               memory: "256Mi" # Request a minimum of 256 MiB of memory for the container

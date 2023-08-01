@@ -5,7 +5,7 @@ metadata:
   labels:
     tier: replicaset
 spec:
-  replicas: 3
+  replicas: 1
   selector:
     matchLabels: # Corrected field name to matchLabels
       kind: backend-api # Label to match with Pod's metadata.labels

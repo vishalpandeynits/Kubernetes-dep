@@ -9,4 +9,3 @@ kubectl apply -f kubernetes/redis/services-kub.yaml
 #deploy backend application
 kubectl apply -f kubernetes/backend-app/deployment-kub.yaml
 kubectl apply -f kubernetes/backend-app/services-kub.yaml
-

@@ -1,22 +1,22 @@
 apiVersion: apps/v1
-kind: ReplicaSet
+kind: Deployment
 metadata:
-  name: replicaset-conf
+  name: deployment-conf-redis
   labels:
-    tier: replicaset
+    tier: deployment-redis
 spec:
   replicas: 1
   selector:
     matchLabels: # Corrected field name to matchLabels
-      kind: backend-api # Label to match with Pod's metadata.labels
+      kind: redis # Label to match with Pod's metadata.labels
   template:
     metadata:
       labels:
-        kind: backend-api # Label for the Pod's metadata.labels
+        kind: redis # Label for the Pod's metadata.labels
     spec:
       containers:
-        - name: backend-api
-          image: vishalpandeynits/workspace-api
+        - name: redis
+          image: redis
           resources:
             limits:
               cpu: "1" # Limit the container to use a maximum of 1 CPU core
@@ -24,3 +24,18 @@ spec:
             requests:
               cpu: "0.5" # Request a minimum of 0.5 CPU core for the container
               memory: "256Mi" # Request a minimum of 256 MiB of memory for the container
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: backend-service
+spec:
+  selector:
+    kind: redis
+  ports:
+    - protocol: TCP
+      port: 6379
+      targetPort: 6379
+  type: ClusterIP

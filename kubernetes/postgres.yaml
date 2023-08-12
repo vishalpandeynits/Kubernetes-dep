@@ -29,3 +29,17 @@ spec:
             requests:
               cpu: "0.25" # Request a minimum of 0.25 CPU core for the container
               memory: "256Mi" # Request a minimum of 256 MiB of memory for the container
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: db
+spec:
+  selector:
+    kind: postgres
+  ports:
+    - protocol: TCP
+      port: 5432
+      targetPort: 5432
+  type: ClusterIP
